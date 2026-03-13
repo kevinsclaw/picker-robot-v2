@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Picker Robot V2 URDF
+  基于 AR4 v5.1 固件 DH 参数生成
+  
+  DH 参数 (Modified DH / Craig Convention):
+    Link 1: alpha=0,    a=0,     d=169.77, theta_offset=0
+    Link 2: alpha=-90,  a=64.2,  d=0,      theta_offset=-90
+    Link 3: alpha=0,    a=305,   d=0,      theta_offset=0
+    Link 4: alpha=-90,  a=0,     d=222.63, theta_offset=0
+    Link 5: alpha=90,   a=0,     d=0,      theta_offset=0
+    Link 6: alpha=-90,  a=0,     d=41,     theta_offset=180
+    
+  单位: 米 (m), 弧度 (rad)
+  注意: URDF 使用标准 DH 约定的 joint origin 表示，
+        这里将 Modified DH 转换为 URDF 的 parent-to-child transform。
+-->
+<robot name="picker_v2">
+
+  <!-- ==================== Materials ==================== -->
+  <material name="dark_grey">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+  </material>
+  <material name="light_grey">
+    <color rgba="0.7 0.7 0.7 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.2 0.4 0.8 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="0.9 0.5 0.1 1.0"/>
+  </material>
+
+  <!-- ==================== Base Link ==================== -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.08" length="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.08" length="0.05"/>
+      </geometry>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="2.0"/>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <inertia ixx="0.003" ixy="0" ixz="0" iyy="0.003" iyz="0" izz="0.005"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 1 (旋转底座) ==================== -->
+  <!-- Joint 1: 绕 Z 轴旋转, 从 base 到 link1, 高度 d1=169.77mm -->
+  <joint name="joint_1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.16977" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.8449" upper="2.8449" effort="50" velocity="1.5"/>
+    <!-- ±163° -->
+  </joint>
+
+  <link name="link_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.06" length="0.12"/>
+      </geometry>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.06" length="0.12"/>
+      </geometry>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1.5"/>
+      <origin xyz="0 0 -0.06" rpy="0 0 0"/>
+      <inertia ixx="0.002" ixy="0" ixz="0" iyy="0.002" iyz="0" izz="0.002"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 2 (肩部) ==================== -->
+  <!-- Joint 2: alpha=-90°旋转 X, 偏移 a2=64.2mm, theta_offset=-90° -->
+  <joint name="joint_2" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0.0642 0 0" rpy="-1.5708 -1.5708 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.0472" upper="1.5708" effort="80" velocity="1.5"/>
+    <!-- -60° to 90° -->
+  </joint>
+
+  <link name="link_2">
+    <visual>
+      <geometry>
+        <box size="0.305 0.08 0.08"/>
+      </geometry>
+      <origin xyz="0.1525 0 0" rpy="0 0 0"/>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.305 0.08 0.08"/>
+      </geometry>
+      <origin xyz="0.1525 0 0" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="1.2"/>
+      <origin xyz="0.1525 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 3 (大臂) ==================== -->
+  <!-- Joint 3: alpha=0, a3=305mm -->
+  <joint name="joint_3" type="revolute">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0.305 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.4835" effort="60" velocity="1.5"/>
+    <!-- -90° to 85° -->
+  </joint>
+
+  <link name="link_3">
+    <visual>
+      <geometry>
+        <box size="0.08 0.07 0.22263"/>
+      </geometry>
+      <origin xyz="0 0 -0.111315" rpy="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.08 0.07 0.22263"/>
+      </geometry>
+      <origin xyz="0 0 -0.111315" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.8"/>
+      <origin xyz="0 0 -0.111315" rpy="0 0 0"/>
+      <inertia ixx="0.004" ixy="0" ixz="0" iyy="0.004" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 4 (前臂/腕部1) ==================== -->
+  <!-- Joint 4: alpha=-90°, d4=222.63mm -->
+  <joint name="joint_4" type="revolute">
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <origin xyz="0 0 -0.22263" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0195" upper="3.0195" effort="30" velocity="2.0"/>
+    <!-- ±173° -->
+  </joint>
+
+  <link name="link_4">
+    <visual>
+      <geometry>
+        <cylinder radius="0.035" length="0.08"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="light_grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.035" length="0.08"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0005" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0003"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 5 (腕部2) ==================== -->
+  <!-- Joint 5: alpha=90° -->
+  <joint name="joint_5" type="revolute">
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.8850" upper="1.8850" effort="20" velocity="2.0"/>
+    <!-- ±108° -->
+  </joint>
+
+  <link name="link_5">
+    <visual>
+      <geometry>
+        <cylinder radius="0.03" length="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.03" length="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Link 6 (末端法兰) ==================== -->
+  <!-- Joint 6: alpha=-90°, d6=41mm -->
+  <joint name="joint_6" type="revolute">
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <origin xyz="0 0 0.041" rpy="-1.5708 3.1416 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="10" velocity="3.0"/>
+    <!-- ±180° -->
+  </joint>
+
+  <link name="link_6">
+    <visual>
+      <geometry>
+        <cylinder radius="0.025" length="0.02"/>
+      </geometry>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.025" length="0.02"/>
+      </geometry>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      <inertia ixx="0.00003" ixy="0" ixz="0" iyy="0.00003" iyz="0" izz="0.00003"/>
+    </inertial>
+  </link>
+
+  <!-- ==================== Tool (末端工具点) ==================== -->
+  <joint name="tool_joint" type="fixed">
+    <parent link="link_6"/>
+    <child link="tool_link"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+  </joint>
+
+  <link name="tool_link"/>
+
+  <!-- ==================== Gazebo 插件 ==================== -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher"/>
+    <plugin filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+      <joint_name>joint_1</joint_name>
+      <joint_name>joint_2</joint_name>
+      <joint_name>joint_3</joint_name>
+      <joint_name>joint_4</joint_name>
+      <joint_name>joint_5</joint_name>
+      <joint_name>joint_6</joint_name>
+      <topic>joint_commands</topic>
+    </plugin>
+  </gazebo>
+
+  <!-- 连杆颜色 (Gazebo Classic 兼容) -->
+  <gazebo reference="base_link"><material>Gazebo/DarkGrey</material></gazebo>
+  <gazebo reference="link_1"><material>Gazebo/Blue</material></gazebo>
+  <gazebo reference="link_2"><material>Gazebo/Grey</material></gazebo>
+  <gazebo reference="link_3"><material>Gazebo/Blue</material></gazebo>
+  <gazebo reference="link_4"><material>Gazebo/Grey</material></gazebo>
+  <gazebo reference="link_5"><material>Gazebo/Orange</material></gazebo>
+  <gazebo reference="link_6"><material>Gazebo/Orange</material></gazebo>
+
+</robot>

@@ -1,0 +1,24 @@
+# 大文件
+*.rar
+*.zip
+
+# 虚拟环境
+.venv/
+__pycache__/
+
+# OpenClaw 内部
+.openclaw/
+
+# 个人文件
+MEMORY.md
+USER.md
+IDENTITY.md
+SOUL.md
+AGENTS.md
+BOOTSTRAP.md
+HEARTBEAT.md
+TOOLS.md
+memory/
+
+# macOS
+.DS_Store
